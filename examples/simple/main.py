@@ -17,6 +17,7 @@ import os
 import click
 import gym
 import neat
+import numpy as np
 
 from pytorch_neat.multi_env_eval import MultiEnvEvaluator
 from pytorch_neat.neat_reporter import LogReporter
@@ -35,7 +36,8 @@ def make_net(genome, config, bs):
 
 def activate_net(net, states):
     outputs = net.activate(states).numpy()
-    return outputs[:, 0] > 0.5
+    # type error: used to return np array of bools instead of +1 or 0
+    return list(map(int, outputs[:, 0] > 0.5))
 
 
 @click.command()
